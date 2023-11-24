@@ -43,7 +43,7 @@ def main() -> None:
         data = [line.strip() for line in file]
 
     print(problem1(data[0]))  # 1987
-    print(problem2(data[0]))  # ?
+    print(problem2(data[0]))  # 3059
 
 
 if __name__ == "__main__":

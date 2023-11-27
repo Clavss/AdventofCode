@@ -1,5 +1,6 @@
 import os
 from abc import ABC, abstractmethod
+from functools import wraps
 
 from utils.exceptions import TestFailException
 
@@ -12,8 +13,9 @@ def assert_equal(actual, expected) -> None:
 
 
 class Exercise(ABC):
-    def __init__(self, dir_name: str) -> None:
+    def __init__(self, dir_name: str, debug=False) -> None:
         self.name = dir_name
+        self.debug = debug
 
     def parse(self) -> list[str]:
         with open(os.path.join(self.name, 'input.txt'), 'r') as file:
@@ -64,3 +66,14 @@ class Exercise(ABC):
     def exec_all(self, test=True):
         self.exec_part(1, test)
         self.exec_part(2, test)
+
+    @staticmethod
+    def stack(function):
+        @wraps(function)
+        def wrapper(*args, **kwargs):
+            self = args[0]
+            if self.debug:
+                print(function.__name__)
+            return function(*args, **kwargs)
+
+        return wrapper

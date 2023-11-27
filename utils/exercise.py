@@ -77,3 +77,6 @@ class Exercise(ABC):
             return function(*args, **kwargs)
 
         return wrapper
+
+    def set_debug(self, debug=True) -> None:
+        self.debug = debug

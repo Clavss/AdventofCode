@@ -1,6 +1,5 @@
-from __future__ import annotations
-
 import os
+
 from utils.exercise import Exercise
 
 
@@ -18,7 +17,7 @@ class Problem(Exercise):
         for line in data:
             self.handle_instruction(line)
 
-        cycles_asked = [20 + 40*i for i in range(6)]
+        cycles_asked = [20 + 40 * i for i in range(6)]
         for cycle in cycles_asked:
             res += cycle * self.get_x_at_cycle(cycle)
 
@@ -86,8 +85,8 @@ class Problem(Exercise):
                 self.x += quantity
 
         # Show the answer in a readable format
-        length = len(crt)//6
-        [print(crt[i*length:(i+1)*length-1]) for i in range(6)]
+        length = len(crt) // 6
+        [print(crt[i * length:(i + 1) * length - 1]) for i in range(6)]
 
         return crt
 

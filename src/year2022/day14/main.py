@@ -64,12 +64,10 @@ class Problem(Exercise):
             for index, coord_str in enumerate(split):
                 _split = coord_str.split(',')
                 x, y = int(_split[0]), int(_split[1])
-                if x < self.min_x:
-                    self.min_x = x
-                if x > self.max_x:
-                    self.max_x = x
-                if y > self.max_y:
-                    self.max_y = y
+
+                self.min_x = min(x, self.min_x)
+                self.max_x = max(x, self.max_x)
+                self.max_y = max(y, self.max_y)
 
                 coord = Coord(x, y)
                 if index != 0:
@@ -94,10 +92,8 @@ class Problem(Exercise):
 
                 # in void, expand x limits
                 if full:
-                    if sand_unit_x < self.min_x:
-                        self.min_x = sand_unit_x
-                    elif sand_unit_x > self.max_x:
-                        self.max_x = sand_unit_x
+                    self.min_x = min(sand_unit_x, self.min_x)
+                    self.max_x = max(sand_unit_x, self.max_x)
 
                 # on floor
                 if full and sand_unit_y == self.max_y + 1:

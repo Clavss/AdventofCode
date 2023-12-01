@@ -24,6 +24,18 @@ def nearest_sensor(n: complex, sensors_dist: dict[complex, int]) -> complex:
     return nearest_s
 
 
+def is_beacon(coord: complex, coords: list[tuple[complex, complex]]) -> bool:
+    return coord in [beacon for sensor, beacon in coords]
+
+
+def is_in_radius(coord: complex, sensors_radius: dict[complex, int]) -> bool:
+    for sensor, radius in sensors_radius.items():
+        # is in any sensor radius
+        if dist(coord, sensor) <= radius:
+            return True
+    return False
+
+
 class Problem(Exercise):
 
     def part1(self, data: list[str]) -> int | str:
@@ -36,7 +48,7 @@ class Problem(Exercise):
 
         for line in data[1:]:
             # parsing with regex
-            sx, sy, bx, by = [int(s) for s in re.findall(r'\d+', line)]
+            sx, sy, bx, by = [int(s) for s in re.findall(r'-?\d+\.?\d*', line)]
             # simulating coordinates using complex numbers
             s, b = complex(sx, sy), complex(bx, by)
             coords.append((s, b))
@@ -49,17 +61,43 @@ class Problem(Exercise):
         for n in range(min_x, max_x + 1):
             n_coord = complex(n, row)
 
-            for sensor, radius in sensors_radius.items():
-                # is in sensor radius and is not on a beacon
-                if dist(n_coord, sensor) <= radius and (n_coord not in [beacon for sensor, beacon in coords]):
-                    total += 1
-                    break
+            if is_in_radius(n_coord, sensors_radius) and not is_beacon(n_coord, coords):
+                total += 1
 
         return total
 
     def part2(self, data: list[str]) -> int | str:
-        # 16_000_000_000_000
-        pass
+        coords = []
+        sensors_radius: dict[complex, int] = {}
+        row = int(data[0])
+        max_xy = row * 2
+
+        for line in data[1:]:
+            # parsing with regex
+            sx, sy, bx, by = [int(s) for s in re.findall(r'-?\d+\.?\d*', line)]
+            # simulating coordinates using complex numbers
+            s, b = complex(sx, sy), complex(bx, by)
+            coords.append((s, b))
+            d = dist(s, b)
+            sensors_radius[s] = d
+
+        # loop over coords at radius + 1 distance from every sensor
+        for sensor, radius in sensors_radius.items():
+            distance = radius + 1
+            for dx in range(-distance, distance + 1):
+                dy = distance - abs(dx)
+
+                for i in [-1, 1]:
+                    dy *= i
+                    coord = sensor + complex(dx, dy)
+
+                    if not coord.imag >= 0 <= coord.real <= max_xy >= coord.imag:
+                        continue
+
+                    if not is_in_radius(coord, sensors_radius) and not is_beacon(coord, coords):
+                        return int(coord.real * 4_000_000 + coord.imag)
+
+        return 0
 
 
 def main() -> None:

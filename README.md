@@ -1,6 +1,6 @@
 # AdventofCode
 
-### My aoc solutions
+## My aoc solutions
 Since day 7 of 2022, each daily solution is organized as:  
 ```
 dayxx/
@@ -12,7 +12,7 @@ dayxx/
     main.py                 # my solution containing both parts
 ```
 
-### How to run
+## How to run
 Simply execute any `main.py` file.  
 ```
 python main.py

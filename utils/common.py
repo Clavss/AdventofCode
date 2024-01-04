@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import TypeVar, Tuple, Any
 
 T = TypeVar('T')
 
@@ -20,3 +20,7 @@ def get_adjacent_positions(position: complex) -> list[complex]:
 
 def replace_str_at(text: str, index: int, replacement: str) -> str:
     return f'{text[:index]}{replacement}{text[index + 1:]}'
+
+
+def replace_tuple_at(_tuple: tuple[T, ...], index: int, replacement: T) -> tuple[Any, ...]:
+    return *_tuple[:index], replacement, *_tuple[index + 1:]

@@ -60,6 +60,7 @@ def update_terrain_with_interior(terrain: list[str], interior: set[complex]) -> 
 class Problem(Exercise):
 
     def part1(self, data: list[str]) -> int | str:
+        """Visit and count every position inside the trench."""
         count: int
         position: complex = 0j
         trench: set[complex] = {position}
@@ -88,7 +89,25 @@ class Problem(Exercise):
         return count
 
     def part2(self, data: list[str]) -> int | str:
-        pass
+        """Find the area of the shape with the position of its vertices."""
+        previous_position: complex = 0j
+        position: complex = previous_position
+        position_delta: dict[str, complex] = {'3': 0 - 1j, '1': 0 + 1j, '2': -1 + 0j, '0': 1 + 0j}
+        area: int = 0
+        trench_length: int = 0
+
+        for line in data:
+            split: list[str] = line.split(' ')
+            direction: str = split[-1][-2]
+            distance: int = int(split[-1][2:-2], 16)
+
+            trench_length += distance
+            previous_position = position
+            position += distance * position_delta[direction]
+
+            area += int(previous_position.real) * int(position.imag) - int(previous_position.imag) * int(position.real)
+
+        return (area + trench_length) // 2 + 1
 
 
 def main() -> None:

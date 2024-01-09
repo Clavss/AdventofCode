@@ -21,7 +21,7 @@ def is_in_grid(pos: complex, data: list[str]) -> bool:
     return 0 <= x < length and 0 <= y < height
 
 
-def next_directions(data: list[str], position: complex, direction: Direction, consecutive: int) -> list[Direction]:
+def next_directions(direction: Direction, consecutive: int) -> list[Direction]:
     directions: list[Direction] = []
 
     match direction:
@@ -122,7 +122,7 @@ def visit(data: list[str],
     seen[pos_dir_con] = heat_loss
 
     # 4 adjacent positions, minus previous one, minus forward if consecutive is 3
-    new_directions: list[Direction] = next_directions(data, position, direction, consecutive)
+    new_directions: list[Direction] = next_directions(direction, consecutive)
     new_positions: list[complex] = next_positions(position, new_directions)
     min_heat_loss: int | float = math.inf
 
